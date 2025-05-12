@@ -14,6 +14,20 @@ class AppTheme {
     Color(0xFFD9E8FC), // Another light blue
   ];
 
+  // Text style with Avenir font
+  static TextStyle _avenirTextStyle({
+    double fontSize = 16,
+    FontWeight fontWeight = FontWeight.w400,
+    Color color = Colors.black,
+  }) {
+    return TextStyle(
+      fontFamily: 'Avenir',
+      fontSize: fontSize,
+      fontWeight: fontWeight,
+      color: color,
+    );
+  }
+
   static ThemeData get lightTheme {
     return ThemeData(
       primaryColor: primaryColor,
@@ -21,35 +35,54 @@ class AppTheme {
         primary: primaryColor,
         secondary: accentColor,
       ),
-      appBarTheme: const AppBarTheme(
+      fontFamily: 'Avenir', // Default font for the theme
+      appBarTheme: AppBarTheme(
         backgroundColor: Colors.white,
         elevation: 0,
-        iconTheme: IconThemeData(color: Colors.black),
-        titleTextStyle: TextStyle(
-          color: Colors.black,
+        iconTheme: const IconThemeData(color: Colors.black),
+        titleTextStyle: _avenirTextStyle(
           fontSize: 20,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w800, // Avenir Heavy
+          color: Colors.black,
         ),
       ),
       scaffoldBackgroundColor: Colors.white,
-      textTheme: const TextTheme(
-        displayLarge: TextStyle(
-          color: Colors.black,
+      textTheme: TextTheme(
+        displayLarge: _avenirTextStyle(
           fontSize: 28,
-          fontWeight: FontWeight.bold,
-        ),
-        displayMedium: TextStyle(
+          fontWeight: FontWeight.w800, // Avenir Heavy
           color: Colors.black,
+        ),
+        displayMedium: _avenirTextStyle(
           fontSize: 24,
-          fontWeight: FontWeight.bold,
-        ),
-        displaySmall: TextStyle(
+          fontWeight: FontWeight.w800, // Avenir Heavy
           color: Colors.black,
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
         ),
-        bodyLarge: TextStyle(color: Colors.black, fontSize: 16),
-        bodyMedium: TextStyle(color: Colors.black, fontSize: 14),
+        displaySmall: _avenirTextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w800, // Avenir Heavy
+          color: Colors.black,
+        ),
+        headlineMedium: _avenirTextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w700, // Avenir Bold
+          color: Colors.black,
+        ),
+        bodyLarge: _avenirTextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w400, // Avenir Regular
+          color: Colors.black,
+        ),
+        bodyMedium: _avenirTextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w400, // Avenir Regular
+          color: Colors.black,
+        ),
+        labelLarge: _avenirTextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w500, // Avenir Medium
+          color: Colors.black,
+        ),
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: Colors.black,
@@ -65,35 +98,54 @@ class AppTheme {
         primary: Colors.white,
         secondary: accentColor,
       ),
-      appBarTheme: const AppBarTheme(
+      fontFamily: 'Avenir', // Default font for the theme
+      appBarTheme: AppBarTheme(
         backgroundColor: Colors.black,
         elevation: 0,
-        iconTheme: IconThemeData(color: Colors.white),
-        titleTextStyle: TextStyle(
-          color: Colors.white,
+        iconTheme: const IconThemeData(color: Colors.white),
+        titleTextStyle: _avenirTextStyle(
           fontSize: 20,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w800, // Avenir Heavy
+          color: Colors.white,
         ),
       ),
       scaffoldBackgroundColor: const Color(0xFF121212),
-      textTheme: const TextTheme(
-        displayLarge: TextStyle(
-          color: Colors.white,
+      textTheme: TextTheme(
+        displayLarge: _avenirTextStyle(
           fontSize: 28,
-          fontWeight: FontWeight.bold,
-        ),
-        displayMedium: TextStyle(
+          fontWeight: FontWeight.w800, // Avenir Heavy
           color: Colors.white,
+        ),
+        displayMedium: _avenirTextStyle(
           fontSize: 24,
-          fontWeight: FontWeight.bold,
-        ),
-        displaySmall: TextStyle(
+          fontWeight: FontWeight.w800, // Avenir Heavy
           color: Colors.white,
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
         ),
-        bodyLarge: TextStyle(color: Colors.white, fontSize: 16),
-        bodyMedium: TextStyle(color: Colors.white, fontSize: 14),
+        displaySmall: _avenirTextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w800, // Avenir Heavy
+          color: Colors.white,
+        ),
+        headlineMedium: _avenirTextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w700, // Avenir Bold
+          color: Colors.white,
+        ),
+        bodyLarge: _avenirTextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w400, // Avenir Regular
+          color: Colors.white,
+        ),
+        bodyMedium: _avenirTextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w400, // Avenir Regular
+          color: Colors.white,
+        ),
+        labelLarge: _avenirTextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w500, // Avenir Medium
+          color: Colors.white,
+        ),
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: Colors.white,

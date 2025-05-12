@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:notes_app/CORE/themes/app_theme.dart';
-import 'package:notes_app/PRESENTATIONS/BLoC/filters/filter_bloc.dart';
-import 'package:notes_app/PRESENTATIONS/BLoC/notes/notes_bloc.dart';
-import 'package:notes_app/PRESENTATIONS/BLoC/notes/notes_event.dart';
-import 'package:notes_app/PRESENTATIONS/screens/home_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notes_app/CORE/themes/app_theme.dart';
+import 'package:notes_app/PRESENTATIONS/screens/home_screen.dart';
+import 'package:notes_app/PRESENTATIONS/BLoC/notes/notes_bloc.dart';
 import 'package:notes_app/SERVICES/dependency_container.dart' as di;
+import 'package:notes_app/PRESENTATIONS/BLoC/notes/notes_event.dart';
+import 'package:notes_app/PRESENTATIONS/BLoC/filters/filter_bloc.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
