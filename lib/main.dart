@@ -8,5 +8,5 @@ void main() async {
   // Initialize dependencies
   await di.init();
 
-  runApp(const App());
+  runApp(MyApp());
 }

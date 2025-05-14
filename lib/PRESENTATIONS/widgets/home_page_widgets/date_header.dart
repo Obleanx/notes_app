@@ -1,6 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notes_app/PRESENTATIONS/BLoC/theme/theme.dart';
 import 'package:notes_app/PRESENTATIONS/BLoC/theme_cubit.dart';
 
 class DateHeader extends StatelessWidget {
@@ -61,6 +62,9 @@ class DateHeader extends StatelessWidget {
     }
   }
 
+  // Bottom sheet with theme toggle
+
+  // Example implementation in the bottom sheet
   void _showMoreOptions(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -86,18 +90,18 @@ class DateHeader extends StatelessWidget {
                     // Add delete all notes logic here
                   },
                 ),
-                BlocBuilder<ThemeCubit, ThemeMode>(
-                  builder: (context, themeMode) {
-                    final isDark = themeMode == ThemeMode.dark;
+                BlocBuilder<ThemeBloc, ThemeState>(
+                  builder: (context, state) {
+                    final isDarkMode = state.themeMode == ThemeMode.dark;
                     return ListTile(
-                      leading: const Icon(Icons.brightness_6_outlined),
-                      title: const Text('Toggle Theme'),
-                      trailing: Switch(
-                        value: isDark,
-                        onChanged: (_) {
-                          context.read<ThemeCubit>().toggleTheme();
-                        },
+                      leading: Icon(
+                        isDarkMode ? Icons.light_mode : Icons.dark_mode,
                       ),
+                      title: Text(isDarkMode ? 'Light Mode' : 'Dark Mode'),
+                      onTap: () {
+                        context.read<ThemeBloc>().add(ToggleTheme());
+                        Navigator.pop(context);
+                      },
                     );
                   },
                 ),

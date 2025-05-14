@@ -10,7 +10,11 @@ class NotesGrid extends StatelessWidget {
   const NotesGrid({super.key, required this.notes});
 
   @override
+  // Updated NoteGrid widget to use theme-aware colors
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final themeColors = AppTheme.getNoteColors(isDarkMode);
+
     return SliverPadding(
       padding: const EdgeInsets.only(bottom: 80.0),
       sliver: SliverGrid(
@@ -22,11 +26,18 @@ class NotesGrid extends StatelessWidget {
         ),
         delegate: SliverChildBuilderDelegate((context, index) {
           final note = notes[index];
-          final colorIndex = index % AppTheme.noteColors.length;
+          // You can use either approach:
+          // 1. Keep using the original noteColors list (which will always be light mode colors)
+          // final colorIndex = index % AppTheme.noteColors.length;
+          // final color = AppTheme.noteColors[colorIndex];
+
+          // 2. Use the theme-aware colors that change with light/dark mode
+          final colorIndex = index % themeColors.length;
+          final color = themeColors[colorIndex];
 
           return NoteCard(
             note: note,
-            color: AppTheme.noteColors[colorIndex],
+            color: color,
             onTap: () {
               Navigator.push(
                 context,

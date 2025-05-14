@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:notes_app/PRESENTATIONS/BLoC/theme_cubit.dart';
+import 'package:notes_app/CORE/themes/app_theme.dart';
+import 'package:notes_app/SERVICES/dependency_container.dart';
+import 'package:notes_app/PRESENTATIONS/BLoC/theme/theme.dart';
 import 'package:notes_app/PRESENTATIONS/screens/home_screen.dart';
 import 'package:notes_app/PRESENTATIONS/BLoC/notes/notes_bloc.dart';
 import 'package:notes_app/SERVICES/dependency_container.dart' as di;
 import 'package:notes_app/PRESENTATIONS/BLoC/notes/notes_event.dart';
 import 'package:notes_app/PRESENTATIONS/BLoC/filters/filter_bloc.dart';
 
-class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
+  // Initialize your dependency injection
+  await initializeDependencies();
+
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -18,13 +27,19 @@ class App extends StatelessWidget {
           create: (_) => di.sl<NotesBloc>()..add(LoadNotes()),
         ),
         BlocProvider<FilterBloc>(create: (_) => di.sl<FilterBloc>()),
-        BlocProvider(create: (_) => ThemeCubit()), // New Theme Cubit
+        BlocProvider<ThemeBloc>(create: (_) => ThemeBloc()..add(LoadTheme())),
       ],
-      child: MaterialApp(
-        title: 'Notes App',
-        debugShowCheckedModeBanner: false,
-        themeMode: ThemeMode.light, // Default theme mode
-        home: const HomePage(),
+      child: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: (context, themeState) {
+          return MaterialApp(
+            title: 'Notes App',
+            debugShowCheckedModeBanner: false,
+            themeMode: themeState.themeMode,
+            theme: AppTheme.lightTheme(),
+            darkTheme: AppTheme.darkTheme(),
+            home: const HomePage(),
+          );
+        },
       ),
     );
   }
