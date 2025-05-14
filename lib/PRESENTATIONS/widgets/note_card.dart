@@ -30,7 +30,7 @@ class NoteCard extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
           color: color,
-          borderRadius: BorderRadius.circular(16.0),
+          borderRadius: BorderRadius.circular(12.0),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,9 +53,9 @@ class NoteCard extends StatelessWidget {
                 GestureDetector(
                   onTap: onTogglePin,
                   child: Icon(
-                    note.isPinned ? Icons.push_pin : Icons.push_pin_outlined,
-                    size: 20,
-                    color: note.isPinned ? Colors.black : Colors.grey,
+                    note.isPinned ? Icons.push_pin : Icons.push_pin,
+                    size: 16,
+                    color: note.isPinned ? Colors.black : Colors.white,
                   ),
                 ),
               ],

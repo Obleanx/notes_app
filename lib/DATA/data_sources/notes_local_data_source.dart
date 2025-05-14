@@ -33,7 +33,7 @@ class NotesLocalDataSourceImpl implements NotesLocalDataSource {
     _notes = [
       Note(
         id: const Uuid().v4(),
-        title: 'Shopping List',
+        title: 'Homework',
         content:
             '1. Milk\n2. Eggs\n3. Bread\n4. Butter\n5. Cheese\n6. Apples\n7. Bananas\n8. Chicken',
         createdAt: now.subtract(const Duration(days: 2)),
@@ -43,7 +43,7 @@ class NotesLocalDataSourceImpl implements NotesLocalDataSource {
       ),
       Note(
         id: const Uuid().v4(),
-        title: 'Meeting Notes',
+        title: 'Afternoon Classes',
         content:
             '- Discuss project timeline\n- Review team performance\n- Assign new tasks\n- Plan for next sprint\n- Address client feedback\n- Update documentation\n- Set up next meeting',
         createdAt: now.subtract(const Duration(days: 1)),
@@ -53,7 +53,7 @@ class NotesLocalDataSourceImpl implements NotesLocalDataSource {
       ),
       Note(
         id: const Uuid().v4(),
-        title: 'Book Recommendations',
+        title: 'In the late evening',
         content:
             '1. The Alchemist\n2. Atomic Habits\n3. Sapiens\n4. The Psychology of Money\n5. Deep Work\n6. Thinking, Fast and Slow\n7. The Four Agreements\n8. Man\'s Search for Meaning',
         createdAt: now.subtract(const Duration(hours: 12)),
@@ -63,13 +63,47 @@ class NotesLocalDataSourceImpl implements NotesLocalDataSource {
       ),
       Note(
         id: const Uuid().v4(),
-        title: 'Project Ideas',
+        title: 'To-Do List',
         content:
             '1. Mobile note-taking app\n2. Personal finance tracker\n3. Habit tracker\n4. Social media scheduler\n5. Recipe manager\n6. Workout tracker\n7. Language learning app\n8. Book summary app',
         createdAt: now.subtract(const Duration(hours: 6)),
         modifiedAt: now.subtract(const Duration(hours: 6)),
         isPinned: true,
         category: 'Lecture Notes',
+      ),
+      Note(
+        id: const Uuid().v4(),
+        title: 'Campus Tour Notes',
+        content:
+            'Main Building - Historical architecture, houses admin offices\n'
+            'Science Complex - New labs on 3rd floor, robotics demo was impressive\n'
+            'Student Union - Food court open until 11pm, study spaces available 24/7\n'
+            'Library - 5 floors, quiet study area on top floor, group rooms need reservation\n'
+            'Recreation Center - Free for students, pool hours 6am-10pm\n'
+            'Dormitories - Maple Hall newest with private bathrooms\n'
+            'Remember to follow up about scholarship deadlines at financial aid office',
+        createdAt: now.subtract(const Duration(days: 3)),
+        modifiedAt: now.subtract(const Duration(days: 3)),
+        isPinned: false,
+        category: 'Important',
+      ),
+
+      Note(
+        id: const Uuid().v4(),
+        title: 'Roller Coaster Day',
+        content:
+            'Cedar Point Trip Planning:\n'
+            '- Fast passes worth it! Saved hours of waiting\n'
+            '- Top Thrill Dragster: 120mph, 17-second ride but AMAZING\n'
+            '- Millennium Force: Best overall experience, smooth ride\n'
+            '- Maverick: Most intense, multiple launches\n'
+            '- Steel Vengeance: Longest wait (90 min) but best wooden coaster\n'
+            '- Pack sunscreen and water bottle next time\n'
+            '- Food expensive in park, eat breakfast before arriving',
+        createdAt: now.subtract(const Duration(days: 5)),
+        modifiedAt: now.subtract(const Duration(days: 4, hours: 12)),
+        isPinned: true,
+        category: 'To-do Lists',
       ),
     ];
   }

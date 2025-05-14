@@ -11,7 +11,7 @@ class DateList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 80,
+      height: 58,
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       child: BlocBuilder<FilterBloc, FilterState>(
         builder: (context, filterState) {

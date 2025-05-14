@@ -72,7 +72,10 @@ class _HomePageState extends State<HomePage> {
 
               // Date scrolling list
               SliverToBoxAdapter(child: DateList(dates: dates)),
-
+              // Add space between date list and categories
+              SliverToBoxAdapter(
+                child: SizedBox(height: 22.0), // Adjust the height as needed
+              ),
               // Categories list
               SliverToBoxAdapter(
                 child: CategoriesList(categories: _categories),
@@ -107,12 +110,12 @@ class _HomePageState extends State<HomePage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => NoteDetailPage(isNewNote: true),
+                builder: (context) => NewNotesPage(isNewNote: true),
               ),
             );
           },
           backgroundColor: Colors.black,
-          child: const Icon(Icons.add),
+          child: const Icon(Icons.add, color: Colors.white, size: 30),
         ),
       ),
     );

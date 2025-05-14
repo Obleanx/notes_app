@@ -32,7 +32,7 @@ class NotesGrid extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder:
-                      (context) => NoteDetailPage(note: note, isNewNote: false),
+                      (context) => NewNotesPage(note: note, isNewNote: false),
                 ),
               );
             },

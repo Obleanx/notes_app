@@ -23,10 +23,14 @@ class DateChip extends StatelessWidget {
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.only(right: 12.0),
-        width: 60,
+        width: 50,
         decoration: BoxDecoration(
-          color: isSelected ? Colors.black : Colors.grey.shade200,
+          color: isSelected ? Colors.black : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isSelected ? Colors.black : Colors.black12,
+            width: 1,
+          ),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -39,7 +43,7 @@ class DateChip extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: 2),
             Text(
               dayNumber,
               style: TextStyle(
@@ -50,9 +54,9 @@ class DateChip extends StatelessWidget {
             ),
             if (isToday)
               Container(
-                margin: const EdgeInsets.only(top: 4),
-                width: 8,
-                height: 8,
+                margin: const EdgeInsets.only(top: 2),
+                width: 5,
+                height: 6,
                 decoration: BoxDecoration(
                   color: isSelected ? Colors.white : Colors.blue,
                   shape: BoxShape.circle,

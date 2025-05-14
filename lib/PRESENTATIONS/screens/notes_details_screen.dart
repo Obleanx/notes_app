@@ -5,19 +5,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_app/DATA/models/notes_.dart';
 import 'package:notes_app/PRESENTATIONS/BLoC/notes/notes_bloc.dart';
 import 'package:notes_app/PRESENTATIONS/BLoC/notes/notes_event.dart';
+import 'package:notes_app/PRESENTATIONS/screens/category_bottom_sheet.dart';
 
-class NoteDetailPage extends StatefulWidget {
+class NewNotesPage extends StatefulWidget {
   final Note? note;
   final bool isNewNote;
 
-  const NoteDetailPage({Key? key, this.note, required this.isNewNote})
+  const NewNotesPage({Key? key, this.note, required this.isNewNote})
     : super(key: key);
 
   @override
-  State<NoteDetailPage> createState() => _NoteDetailPageState();
+  State<NewNotesPage> createState() => _NewNotesPageState();
 }
 
-class _NoteDetailPageState extends State<NoteDetailPage> {
+class _NewNotesPageState extends State<NewNotesPage> {
   late TextEditingController _titleController;
   late TextEditingController _contentController;
   late String _category;
@@ -28,6 +29,7 @@ class _NoteDetailPageState extends State<NoteDetailPage> {
     'Lecture Notes',
     'To-do Lists',
     'Shopping',
+    "Sunday school",
   ];
 
   @override
@@ -48,6 +50,35 @@ class _NoteDetailPageState extends State<NoteDetailPage> {
     super.dispose();
   }
 
+  void _showCategoryBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder:
+          (context) => CategoryBottomSheet(
+            categories: _categories,
+            selectedCategory: _category,
+            onCategorySelected: (category) {
+              setState(() {
+                _category = category;
+              });
+            },
+            onSave: _saveNote,
+            onDelete: widget.isNewNote ? null : _deleteNote,
+            onAddCategory: (newCategory) {
+              if (newCategory.isNotEmpty &&
+                  !_categories.contains(newCategory)) {
+                setState(() {
+                  _categories.add(newCategory);
+                  _category = newCategory;
+                });
+              }
+            },
+          ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
@@ -65,6 +96,18 @@ class _NoteDetailPageState extends State<NoteDetailPage> {
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
+          // Export icon
+          IconButton(
+            icon: const Icon(Icons.folder_outlined, color: Colors.black),
+            onPressed: () {
+              // Export functionality will be implemented here
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Export as PDF feature coming soon'),
+                ),
+              );
+            },
+          ),
           // Pin button
           IconButton(
             icon: Icon(
@@ -77,16 +120,15 @@ class _NoteDetailPageState extends State<NoteDetailPage> {
               });
             },
           ),
-          // Save button
-          TextButton(
-            onPressed: _saveNote,
-            child: const Text(
-              'Save',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+          // Share button - replaced Save text with icon
+          IconButton(
+            icon: const Icon(Icons.ios_share, color: Colors.black),
+            onPressed: () {
+              // Share functionality will be implemented here
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Share feature coming soon')),
+              );
+            },
           ),
         ],
       ),
@@ -99,38 +141,6 @@ class _NoteDetailPageState extends State<NoteDetailPage> {
             Text(
               formattedDate,
               style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
-            ),
-
-            const SizedBox(height: 16),
-
-            // Category dropdown
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12.0),
-              decoration: BoxDecoration(
-                color: Colors.grey.shade100,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  value: _category,
-                  isExpanded: true,
-                  hint: const Text('Select category'),
-                  items:
-                      _categories.map((String category) {
-                        return DropdownMenuItem<String>(
-                          value: category,
-                          child: Text(category),
-                        );
-                      }).toList(),
-                  onChanged: (String? newValue) {
-                    if (newValue != null) {
-                      setState(() {
-                        _category = newValue;
-                      });
-                    }
-                  },
-                ),
-              ),
             ),
 
             const SizedBox(height: 16),
@@ -162,28 +172,12 @@ class _NoteDetailPageState extends State<NoteDetailPage> {
           ],
         ),
       ),
-      // For existing notes, show a delete option
-      bottomNavigationBar:
-          widget.isNewNote
-              ? null
-              : Container(
-                height: 60,
-                color: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton.icon(
-                      icon: const Icon(Icons.delete_outline, color: Colors.red),
-                      label: const Text(
-                        'Delete',
-                        style: TextStyle(color: Colors.red),
-                      ),
-                      onPressed: _deleteNote,
-                    ),
-                  ],
-                ),
-              ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.black,
+        mini: true,
+        child: const Icon(Icons.category, size: 20),
+        onPressed: _showCategoryBottomSheet,
+      ),
     );
   }
 

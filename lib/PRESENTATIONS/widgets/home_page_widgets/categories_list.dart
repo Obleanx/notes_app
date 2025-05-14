@@ -11,7 +11,7 @@ class CategoriesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 40,
+      height: 35,
       margin: const EdgeInsets.only(bottom: 16.0),
       child: BlocBuilder<FilterBloc, FilterState>(
         builder: (context, filterState) {

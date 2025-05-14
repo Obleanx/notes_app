@@ -1,5 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notes_app/PRESENTATIONS/BLoC/theme_cubit.dart';
 
 class DateHeader extends StatelessWidget {
   const DateHeader({super.key});
@@ -11,7 +13,7 @@ class DateHeader extends StatelessWidget {
     final DateFormat monthFormatter = DateFormat('MMMM');
 
     return Padding(
-      padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
+      padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -84,12 +86,19 @@ class DateHeader extends StatelessWidget {
                     // Add delete all notes logic here
                   },
                 ),
-                ListTile(
-                  leading: const Icon(Icons.settings_outlined),
-                  title: const Text('Settings'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    // Navigate to settings
+                BlocBuilder<ThemeCubit, ThemeMode>(
+                  builder: (context, themeMode) {
+                    final isDark = themeMode == ThemeMode.dark;
+                    return ListTile(
+                      leading: const Icon(Icons.brightness_6_outlined),
+                      title: const Text('Toggle Theme'),
+                      trailing: Switch(
+                        value: isDark,
+                        onChanged: (_) {
+                          context.read<ThemeCubit>().toggleTheme();
+                        },
+                      ),
+                    );
                   },
                 ),
               ],
