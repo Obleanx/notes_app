@@ -1,16 +1,26 @@
-# notes_app
+Notes_app
+Overview
+Notes_app is a Flutter application for creating and managing notes with a clean architecture and BLoC pattern for state management.
+Features
 
-A new Flutter project.
+Create, view, edit, and delete notes
+Search notes by title and content
+Sort notes by date or alphabetically
+Tag notes for organization
+Dark and light mode support
+Export and share notes
 
-## Getting Started
+Architecture
+Built with clean architecture principles:
 
-This project is a starting point for a Flutter application.
+Data Layer: Storage and retrieval
+Domain Layer: Business logic
+Presentation Layer: UI and state
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Project Structure
+lib/
+├── core/        # Utilities and constants
+├── data/        # Data sources and models
+├── domain/      # Entities and use cases
+├── presentation/# UI components and BLoCs
+└── main.dart    # Entry point
