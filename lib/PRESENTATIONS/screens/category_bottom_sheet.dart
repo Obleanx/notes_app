@@ -26,7 +26,6 @@ class CategoryBottomSheet extends StatefulWidget {
 class _CategoryBottomSheetState extends State<CategoryBottomSheet> {
   late String _selectedCategory;
   final TextEditingController _searchController = TextEditingController();
-  bool _isAddingNewCategory = false;
   String _searchQuery = '';
 
   @override
@@ -43,6 +42,20 @@ class _CategoryBottomSheetState extends State<CategoryBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    // Get the current theme
+    final ThemeData theme = Theme.of(context);
+    final bool isDarkMode = theme.brightness == Brightness.dark;
+
+    // Define colors based on theme
+    final Color backgroundColor = isDarkMode ? Colors.grey[900]! : Colors.white;
+    final Color textColor = isDarkMode ? Colors.white : Colors.black;
+    final Color searchBgColor =
+        isDarkMode ? Colors.grey[800]! : Color.fromARGB(255, 244, 242, 242);
+    final Color iconColor =
+        isDarkMode ? Colors.grey[400]! : Color.fromARGB(255, 133, 131, 131);
+    final Color selectedCircleColor = isDarkMode ? Colors.blue : Colors.black;
+    final Color selectedCheckColor = isDarkMode ? Colors.white : Colors.white;
+
     // Filter categories based on search query
     final filteredCategories =
         _searchQuery.isEmpty
@@ -58,9 +71,9 @@ class _CategoryBottomSheetState extends State<CategoryBottomSheet> {
     // Take approximately 60% of the screen height
     return Container(
       height: MediaQuery.of(context).size.height * 0.60,
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
         ),
@@ -85,13 +98,14 @@ class _CategoryBottomSheetState extends State<CategoryBottomSheet> {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    const Align(
+                    Align(
                       alignment: Alignment.center,
                       child: Text(
                         'Category',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
+                          color: textColor,
                         ),
                       ),
                     ),
@@ -100,14 +114,11 @@ class _CategoryBottomSheetState extends State<CategoryBottomSheet> {
                       child: Container(
                         width: 30,
                         decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 244, 242, 242),
+                          color: searchBgColor,
                           shape: BoxShape.circle,
                         ),
                         child: IconButton(
-                          icon: const Icon(
-                            Icons.close,
-                            color: Color.fromARGB(255, 133, 131, 131),
-                          ),
+                          icon: Icon(Icons.close, color: iconColor),
                           onPressed: () => Navigator.pop(context),
                           iconSize: 18,
                         ),
@@ -123,7 +134,7 @@ class _CategoryBottomSheetState extends State<CategoryBottomSheet> {
                   horizontal: 20,
                   vertical: 16,
                 ),
-                child: _buildSearchField(),
+                child: _buildSearchField(iconColor, textColor),
               ),
 
               // Category list
@@ -134,7 +145,7 @@ class _CategoryBottomSheetState extends State<CategoryBottomSheet> {
                   itemBuilder: (context, index) {
                     final category = filteredCategories[index];
                     return ListTile(
-                      title: Text(category),
+                      title: Text(category, style: TextStyle(color: textColor)),
                       contentPadding: const EdgeInsets.symmetric(
                         //vertical: 2,
                       ),
@@ -149,13 +160,13 @@ class _CategoryBottomSheetState extends State<CategoryBottomSheet> {
                               ? Container(
                                 width: 20,
                                 height: 20,
-                                decoration: const BoxDecoration(
-                                  color: Colors.black,
+                                decoration: BoxDecoration(
+                                  color: selectedCircleColor,
                                   shape: BoxShape.circle,
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.check,
-                                  color: Colors.white,
+                                  color: selectedCheckColor,
                                   size: 14,
                                 ),
                               )
@@ -212,7 +223,7 @@ class _CategoryBottomSheetState extends State<CategoryBottomSheet> {
     );
   }
 
-  Widget _buildSearchField() {
+  Widget _buildSearchField(Color iconColor, Color textColor) {
     return TextField(
       controller: _searchController,
       onChanged: (value) {
@@ -220,19 +231,23 @@ class _CategoryBottomSheetState extends State<CategoryBottomSheet> {
           _searchQuery = value;
         });
       },
+      style: TextStyle(color: textColor),
       decoration: InputDecoration(
         hintText: 'Add category',
-        hintStyle: const TextStyle(
+        hintStyle: TextStyle(
           fontSize: 16,
-          color: Color.fromARGB(255, 133, 131, 131),
+          color: iconColor,
         ), // smaller hint text
         prefixIcon: Container(
           margin: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            border: Border.all(color: Colors.grey, width: 1), // grey border
+            border: Border.all(
+              color: iconColor,
+              width: 1,
+            ), // border color from theme
           ),
-          child: const Icon(Icons.add, size: 18, color: Colors.grey),
+          child: Icon(Icons.add, size: 18, color: iconColor),
         ),
 
         border: InputBorder.none, // no border

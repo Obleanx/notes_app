@@ -2,7 +2,6 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_app/PRESENTATIONS/BLoC/theme/theme.dart';
-import 'package:notes_app/PRESENTATIONS/BLoC/theme_cubit.dart';
 
 class DateHeader extends StatelessWidget {
   const DateHeader({super.key});
@@ -20,21 +19,15 @@ class DateHeader extends StatelessWidget {
         children: [
           RichText(
             text: TextSpan(
-              style: const TextStyle(color: Colors.black),
+              style: TextStyle(color: getTextColorBasedOnTheme(context)),
               children: [
                 TextSpan(
                   text: '${formatter.format(now)}${_getDaySuffix(now.day)} ',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
                 ),
                 TextSpan(
                   text: monthFormatter.format(now),
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -110,4 +103,10 @@ class DateHeader extends StatelessWidget {
           ),
     );
   }
+}
+
+Color getTextColorBasedOnTheme(BuildContext context) {
+  return Theme.of(context).brightness == Brightness.dark
+      ? Colors.white
+      : Colors.black;
 }

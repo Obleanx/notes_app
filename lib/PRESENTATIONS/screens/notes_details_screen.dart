@@ -3,9 +3,13 @@ import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_app/DATA/models/notes_.dart';
+import 'package:notes_app/SERVICES/notes_share.dart';
+import 'package:notes_app/SERVICES/notes_export.dart';
 import 'package:notes_app/PRESENTATIONS/BLoC/notes/notes_bloc.dart';
 import 'package:notes_app/PRESENTATIONS/BLoC/notes/notes_event.dart';
+import 'package:notes_app/PRESENTATIONS/BLoC/notes/export_share_bloc.dart';
 import 'package:notes_app/PRESENTATIONS/screens/category_bottom_sheet.dart';
+import 'package:notes_app/PRESENTATIONS/widgets/notes_export_share_sheet.dart';
 
 class NewNotesPage extends StatefulWidget {
   final Note? note;
@@ -40,6 +44,12 @@ class _NewNotesPageState extends State<NewNotesPage> {
       text: widget.note?.content ?? '',
     );
     _category = widget.note?.category ?? 'All';
+    _isPinned = widget.note?.isPinned ?? false;
+    // Initialize with existing note data or defaults
+    _titleController = TextEditingController(text: widget.note?.title ?? '');
+    _contentController = TextEditingController(
+      text: widget.note?.content ?? '',
+    );
     _isPinned = widget.note?.isPinned ?? false;
   }
 
@@ -79,6 +89,41 @@ class _NewNotesPageState extends State<NewNotesPage> {
     );
   }
 
+  // Show the export/share bottom sheet
+  void _showExportShareOptions() {
+    // Create the BLoC for export and share operations
+    final exportShareBloc = ExportShareBloc(
+      exportService: NoteExportService(),
+      shareService: NoteShareService(),
+      context: context,
+    );
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        // Provide the BLoC to the bottom sheet content
+        return BlocProvider.value(
+          value: exportShareBloc,
+          child: NoteExportShareSheet(
+            title:
+                _titleController.text.isNotEmpty
+                    ? _titleController.text
+                    : 'Untitled Note',
+            content: _contentController.text,
+            createdAt: DateTime.now(),
+          ),
+        );
+      },
+    ).then((_) {
+      // Close the BLoC when bottom sheet is closed
+      exportShareBloc.close();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
@@ -96,16 +141,16 @@ class _NewNotesPageState extends State<NewNotesPage> {
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
-          // Export icon
           IconButton(
             icon: const Icon(Icons.folder_outlined, color: Colors.black),
             onPressed: () {
-              // Export functionality will be implemented here
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Export as PDF feature coming soon'),
-                ),
-              );
+              if (_contentController.text.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Cannot export empty note')),
+                );
+                return;
+              }
+              _showExportShareOptions();
             },
           ),
           // Pin button
@@ -120,14 +165,16 @@ class _NewNotesPageState extends State<NewNotesPage> {
               });
             },
           ),
-          // Share button - replaced Save text with icon
           IconButton(
             icon: const Icon(Icons.ios_share, color: Colors.black),
             onPressed: () {
-              // Share functionality will be implemented here
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Share feature coming soon')),
-              );
+              if (_contentController.text.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Cannot share empty note')),
+                );
+                return;
+              }
+              _showExportShareOptions();
             },
           ),
         ],
@@ -175,8 +222,8 @@ class _NewNotesPageState extends State<NewNotesPage> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.black,
         mini: true,
-        child: const Icon(Icons.category, size: 20),
         onPressed: _showCategoryBottomSheet,
+        child: const Icon(Icons.category, size: 20),
       ),
     );
   }

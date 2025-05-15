@@ -17,12 +17,28 @@ class HomeScreenSearchBar extends StatelessWidget {
       child: TextField(
         controller: controller,
         onChanged: onChanged,
+        style: TextStyle(
+          color:
+              Theme.of(context).brightness == Brightness.dark
+                  ? Colors
+                      .black // Black text in dark mode
+                  : Colors.black, // Black text in light mode
+        ),
         decoration: InputDecoration(
           hintText: 'Search for notes',
-          hintStyle: TextStyle(color: Colors.grey.shade500),
-          prefixIcon: const Icon(Icons.search, color: Colors.grey),
+          hintStyle: TextStyle(
+            color:
+                Theme.of(context).brightness == Brightness.dark
+                    ? Colors
+                        .black // Black hint in dark mode
+                    : Colors.grey.shade500, // Darker grey hint in light mode
+          ),
+          prefixIcon: const Icon(
+            Icons.search,
+            color: Colors.grey,
+          ), // Icon stays grey
           filled: true,
-          fillColor: Colors.grey.shade100,
+          fillColor: Colors.grey.shade100, // Background stays light grey
           contentPadding: const EdgeInsets.symmetric(vertical: 0),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
@@ -32,4 +48,10 @@ class HomeScreenSearchBar extends StatelessWidget {
       ),
     );
   }
+}
+
+Color getTextColorBasedOnTheme(BuildContext context) {
+  return Theme.of(context).brightness == Brightness.dark
+      ? Colors.white
+      : Colors.black;
 }
