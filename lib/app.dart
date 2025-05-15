@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
             theme: AppTheme.lightTheme(),
             darkTheme: AppTheme.darkTheme(),
             home: const SplashScreen(),
-            // Apply Montserrat font to the entire app
+            // Apply Montserrat font to the entire app because the suggested font is only available in paid version.
             builder: (context, child) {
               return Theme(
                 data: Theme.of(context).copyWith(
