@@ -46,6 +46,8 @@ dependencies:
   path_provider: ^2.1.5
   share_plus: ^11.0.0
   url_launcher: ^6.3.1
+  google_fonts: ^6.2.1
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -57,13 +59,28 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  build_runner: ^2.4.6
+  flutter_launcher_icons: ^0.14.3 
+  json_serializable: ^6.6.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
+# App icon configuration
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/Gradient Background.jpeg"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: false
+  windows:
+    generate: false
+  macos:
+    generate: false
+
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -83,19 +100,9 @@ flutter:
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  #fonts:
-    #- family: Avenir
-     # fonts:
-       # - asset: assets/fonts/Avenir-Regular.ttf
-        #  weight: 400
-       # - asset: assets/fonts/Avenir-Medium.ttf
-       #   weight: 500
-       # - asset: assets/fonts/Avenir-Bold.ttf
-       #   weight: 700
-       # - asset: assets/fonts/Avenir-Heavy.ttf
-       #   weight: 800
+  # list giving the asset and other descriptors for the font.
+  # Example:
+  # fonts:
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

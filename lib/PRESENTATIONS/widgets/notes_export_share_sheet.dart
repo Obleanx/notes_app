@@ -22,16 +22,13 @@ class NoteExportShareSheet extends StatelessWidget {
       listener: (context, state) {
         if (state is ExportShareLoading) {
           // Show loading indicator
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
         } else if (state is ExportShareFailure) {
           // Show error message
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.error),
-              backgroundColor: Colors.red,
-            ),
+            SnackBar(content: Text(state.error), backgroundColor: Colors.red),
           );
         }
       },
@@ -48,21 +45,15 @@ class NoteExportShareSheet extends StatelessWidget {
             // Header
             const Text(
               'Export & Share Options',
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24.0),
-            
+
             // Export options
             const Text(
               'Export',
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.w500,
-              ),
+              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 16.0),
             Row(
@@ -72,6 +63,8 @@ class NoteExportShareSheet extends StatelessWidget {
                 _buildOptionButton(
                   context,
                   icon: Icons.picture_as_pdf,
+                  color: Colors.red.shade700,
+
                   label: 'Save as PDF',
                   onTap: () {
                     context.read<ExportShareBloc>().add(
@@ -84,12 +77,14 @@ class NoteExportShareSheet extends StatelessWidget {
                     Navigator.pop(context);
                   },
                 ),
-                
+
                 // Preview PDF
                 _buildOptionButton(
                   context,
                   icon: Icons.preview,
                   label: 'Preview PDF',
+                  color: Colors.blue.shade700,
+
                   onTap: () {
                     context.read<ExportShareBloc>().add(
                       PreviewPdfEvent(
@@ -103,18 +98,15 @@ class NoteExportShareSheet extends StatelessWidget {
                 ),
               ],
             ),
-            
-            const SizedBox(height: 24.0),
+
+            const SizedBox(height: 20.0),
             const Divider(),
-            const SizedBox(height: 24.0),
-            
+            const SizedBox(height: 20.0),
+
             // Share options
             const Text(
               'Share',
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.w500,
-              ),
+              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 16.0),
             Row(
@@ -125,22 +117,23 @@ class NoteExportShareSheet extends StatelessWidget {
                   context,
                   icon: Icons.text_format,
                   label: 'Share as Text',
+                  color: Colors.purple.shade700,
+
                   onTap: () {
                     context.read<ExportShareBloc>().add(
-                      ShareNoteAsTextEvent(
-                        title: title,
-                        content: content,
-                      ),
+                      ShareNoteAsTextEvent(title: title, content: content),
                     );
                     Navigator.pop(context);
                   },
                 ),
-                
+
                 // Share as PDF
                 _buildOptionButton(
                   context,
                   icon: Icons.picture_as_pdf,
                   label: 'Share as PDF',
+                  color: Colors.red.shade700,
+
                   onTap: () {
                     context.read<ExportShareBloc>().add(
                       ShareNoteAsPdfEvent(
@@ -152,18 +145,17 @@ class NoteExportShareSheet extends StatelessWidget {
                     Navigator.pop(context);
                   },
                 ),
-                
+
                 // Share to WhatsApp
                 _buildOptionButton(
                   context,
-                    icon: FontAwesomeIcons.whatsapp,
+                  icon: FontAwesomeIcons.whatsapp,
                   label: 'WhatsApp',
+                  color: Colors.green.shade700,
+
                   onTap: () {
                     context.read<ExportShareBloc>().add(
-                      ShareToWhatsAppEvent(
-                        title: title,
-                        content: content,
-                      ),
+                      ShareToWhatsAppEvent(title: title, content: content),
                     );
                     Navigator.pop(context);
                   },
@@ -182,6 +174,7 @@ class NoteExportShareSheet extends StatelessWidget {
     required IconData icon,
     required String label,
     required VoidCallback onTap,
+    required Color color,
   }) {
     return InkWell(
       onTap: onTap,
@@ -191,7 +184,7 @@ class NoteExportShareSheet extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 12.0),
         child: Column(
           children: [
-            Icon(icon, size: 32, color: Theme.of(context).primaryColor),
+            Icon(icon, size: 32, color: color),
             const SizedBox(height: 8),
             Text(
               label,
