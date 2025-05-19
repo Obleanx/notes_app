@@ -33,7 +33,6 @@ class _NewNotesPageState extends State<NewNotesPage> {
     'Lecture Notes',
     'To-do Lists',
     'Shopping',
-    "Sunday school",
   ];
 
   @override

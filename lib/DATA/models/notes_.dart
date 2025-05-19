@@ -36,4 +36,32 @@ class Note {
       category: category ?? this.category,
     );
   }
+
+  // Convert Note to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'content': content,
+      'createdAt': createdAt.millisecondsSinceEpoch,
+      'modifiedAt': modifiedAt.millisecondsSinceEpoch,
+      'isPinned': isPinned,
+      'category': category,
+    };
+  }
+
+  // Create Note from JSON
+  factory Note.fromJson(Map<String, dynamic> json) {
+    return Note(
+      id: json['id'] as String,
+      title: json['title'] as String,
+      content: json['content'] as String,
+      createdAt: DateTime.fromMillisecondsSinceEpoch(json['createdAt'] as int),
+      modifiedAt: DateTime.fromMillisecondsSinceEpoch(
+        json['modifiedAt'] as int,
+      ),
+      isPinned: json['isPinned'] as bool,
+      category: json['category'] as String,
+    );
+  }
 }

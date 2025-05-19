@@ -54,69 +54,75 @@ class _HomePageState extends State<HomePage> {
     );
 
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: CustomScrollView(
-            slivers: [
-              // Date and more options
-              const SliverToBoxAdapter(child: DateHeader()),
+      body: Stack(
+        children: [
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: CustomScrollView(
+                slivers: [
+                  // Date and more options
+                  const SliverToBoxAdapter(child: DateHeader()),
 
-              // Search bar
-              SliverToBoxAdapter(
-                child: HomeScreenSearchBar(
-                  controller: _searchController,
-                  onChanged: (value) => _onSearchChanged(),
-                ),
-              ),
+                  // Search bar
+                  SliverToBoxAdapter(
+                    child: HomeScreenSearchBar(
+                      controller: _searchController,
+                      onChanged: (value) => _onSearchChanged(),
+                    ),
+                  ),
 
-              // Date scrolling list
-              SliverToBoxAdapter(child: DateList(dates: dates)),
-              // Add space between date list and categories
-              SliverToBoxAdapter(
-                child: SizedBox(height: 22.0), // Adjust the height as needed
-              ),
-              // Categories list
-              SliverToBoxAdapter(
-                child: CategoriesList(categories: _categories),
-              ),
+                  // Date scrolling list
+                  SliverToBoxAdapter(child: DateList(dates: dates)),
 
-              // Notes grid
-              BlocBuilder<NotesBloc, NotesState>(
-                builder: (context, state) {
-                  if (state is NotesInitial || state is NotesLoading) {
-                    return const SliverFillRemaining(
-                      child: Center(child: CircularProgressIndicator()),
-                    );
-                  } else if (state is NotesLoaded) {
-                    return NotesGrid(notes: state.filteredNotes);
-                  } else if (state is NotesError) {
-                    return SliverFillRemaining(
-                      child: Center(child: Text('Error: ${state.message}')),
-                    );
-                  }
-                  return const SliverFillRemaining(
-                    child: Center(child: Text('Something went wrong')),
-                  );
-                },
+                  // Add space between date list and categories
+                  const SliverToBoxAdapter(child: SizedBox(height: 22.0)),
+
+                  // Categories list
+                  SliverToBoxAdapter(
+                    child: CategoriesList(categories: _categories),
+                  ),
+
+                  // Notes grid
+                  BlocBuilder<NotesBloc, NotesState>(
+                    builder: (context, state) {
+                      if (state is NotesInitial || state is NotesLoading) {
+                        return const SliverFillRemaining(
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                      } else if (state is NotesLoaded) {
+                        return NotesGrid(notes: state.filteredNotes);
+                      } else if (state is NotesError) {
+                        return SliverFillRemaining(
+                          child: Center(child: Text('Error: ${state.message}')),
+                        );
+                      }
+                      return const SliverFillRemaining(
+                        child: Center(child: Text('Something went wrong')),
+                      );
+                    },
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
-      floatingActionButton: DraggableFab(
-        child: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => NewNotesPage(isNewNote: true),
-              ),
-            );
-          },
-          backgroundColor: Colors.black,
-          child: const Icon(Icons.add, color: Colors.white, size: 30),
-        ),
+
+          // Add DraggableFab here as part of the Stack this is where that grey screen issue came from
+          DraggableFab(
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NewNotesPage(isNewNote: true),
+                  ),
+                );
+              },
+              backgroundColor: Colors.black,
+              child: const Icon(Icons.add, color: Colors.white, size: 30),
+            ),
+          ),
+        ],
       ),
     );
   }

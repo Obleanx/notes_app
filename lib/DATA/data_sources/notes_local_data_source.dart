@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:uuid/uuid.dart';
 import 'package:notes_app/DATA/models/notes_.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class NotesLocalDataSource {
   Future<List<Note>> getNotes();
@@ -11,9 +13,12 @@ abstract class NotesLocalDataSource {
 }
 
 class NotesLocalDataSourceImpl implements NotesLocalDataSource {
-  // In-memory storage for demo purposes
-  // In a real app, you would use a database like SQLite, Hive, etc.
+  // Storage key
+  static const String _notesStorageKey = 'notes_data';
+
+  // In-memory cache
   List<Note> _notes = [];
+  bool _isInitialized = false;
 
   // Singleton pattern
   static final NotesLocalDataSourceImpl _instance =
@@ -23,9 +28,45 @@ class NotesLocalDataSourceImpl implements NotesLocalDataSource {
     return _instance;
   }
 
-  NotesLocalDataSourceImpl._internal() {
-    // Initialize with some sample notes
-    _initializeSampleNotes();
+  NotesLocalDataSourceImpl._internal();
+
+  // Initialize data - load from SharedPreferences or create sample data if none exists
+  Future<void> _ensureInitialized() async {
+    if (_isInitialized) return;
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final String? notesJson = prefs.getString(_notesStorageKey);
+
+      if (notesJson != null && notesJson.isNotEmpty) {
+        // Parse stored notes
+        final List<dynamic> decoded = jsonDecode(notesJson);
+        _notes = decoded.map((item) => Note.fromJson(item)).toList();
+      } else {
+        // If no stored data, initialize with sample notes
+        _initializeSampleNotes();
+        // Save the sample notes to storage
+        await _saveToStorage();
+      }
+
+      _isInitialized = true;
+    } catch (e) {
+      // Fallback to sample notes if there's any error
+      _initializeSampleNotes();
+      _isInitialized = true;
+    }
+  }
+
+  // Save current notes to persistent storage
+  Future<void> _saveToStorage() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final List<Map<String, dynamic>> jsonList =
+          _notes.map((note) => note.toJson()).toList();
+      await prefs.setString(_notesStorageKey, jsonEncode(jsonList));
+    } catch (e) {
+      print('Error saving notes: $e');
+    }
   }
 
   void _initializeSampleNotes() {
@@ -87,7 +128,6 @@ class NotesLocalDataSourceImpl implements NotesLocalDataSource {
         isPinned: false,
         category: 'Important',
       ),
-
       Note(
         id: const Uuid().v4(),
         title: 'Roller Coaster Day',
@@ -110,17 +150,22 @@ class NotesLocalDataSourceImpl implements NotesLocalDataSource {
 
   @override
   Future<List<Note>> getNotes() async {
+    await _ensureInitialized();
+
     // Sort by pinned first, then by modified date
     _notes.sort((a, b) {
       if (a.isPinned && !b.isPinned) return -1;
       if (!a.isPinned && b.isPinned) return 1;
       return b.modifiedAt.compareTo(a.modifiedAt);
     });
+
     return _notes;
   }
 
   @override
   Future<Note> getNoteById(String id) async {
+    await _ensureInitialized();
+
     final note = _notes.firstWhere(
       (note) => note.id == id,
       orElse: () => throw Exception('Note not found'),
@@ -130,18 +175,27 @@ class NotesLocalDataSourceImpl implements NotesLocalDataSource {
 
   @override
   Future<void> addNote(Note note) async {
+    await _ensureInitialized();
+
     // Generate ID if not provided
     final noteWithId =
         note.id.isEmpty ? note.copyWith(id: const Uuid().v4()) : note;
 
     _notes.add(noteWithId);
+
+    // Save to persistent storage
+    await _saveToStorage();
   }
 
   @override
   Future<void> updateNote(Note note) async {
+    await _ensureInitialized();
+
     final index = _notes.indexWhere((n) => n.id == note.id);
     if (index != -1) {
       _notes[index] = note;
+      // Save to persistent storage
+      await _saveToStorage();
     } else {
       throw Exception('Note not found');
     }
@@ -149,6 +203,11 @@ class NotesLocalDataSourceImpl implements NotesLocalDataSource {
 
   @override
   Future<void> deleteNote(String id) async {
+    await _ensureInitialized();
+
     _notes.removeWhere((note) => note.id == id);
+
+    // Save to persistent storage
+    await _saveToStorage();
   }
 }

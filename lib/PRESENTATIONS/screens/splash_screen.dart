@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:notes_app/PRESENTATIONS/screens/home_screen.dart';
 // ignore_for_file: deprecated_member_use
 
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -118,7 +117,7 @@ class _SplashScreenState extends State<SplashScreen>
                             fontFamily: 'Montserrat',
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
-                            // ignore: deprecated_member_use
+
                             color: Colors.white.withOpacity(0.85),
                           ),
                         ),
