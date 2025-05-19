@@ -15,10 +15,6 @@ class NoteExportService {
     // Create PDF document
     final pdf = pw.Document();
 
-    // Load font (optional, use system font if not loading custom)
-    // If you have custom fonts, load them like this:
-    // final font = await PdfGoogleFonts.nunitoRegular();
-
     // Add page to the PDF
     pdf.addPage(
       pw.Page(

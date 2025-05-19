@@ -71,9 +71,7 @@ class NoteShareService {
   }) async {
     try {
       // Create WhatsApp URI
-      final uri = Uri.parse(
-        'whatsapp://send?text=${Uri.encodeComponent(text)}',
-      );
+      Uri.parse('whatsapp://send?text=${Uri.encodeComponent(text)}');
 
       // Try to launch WhatsApp directly
       // if (await canLaunchUrl(uri)) {
